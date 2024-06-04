@@ -21,6 +21,19 @@ func (as *AuthorService) CreateAuthor() {
 	as.authorRepository.Save(author)
 }
 
-func (as *AuthorService) FindAuthor(id string) domain.Author {
-	return domain.Author{}
+func (as *AuthorService) GetAuthor(id string) (domain.Author, error) {
+	return as.authorRepository.SearchAuthor(id)
+}
+
+func (as *AuthorService) DeleteAuthor(id string) error {
+	return nil
+}
+
+func (as *AuthorService) UpdateAuthorName(id string, newAuthorName string) error {
+	targetAuthor, err := as.GetAuthor(id)
+	if err != nil {
+		return err
+	}
+	targetAuthor.ChangeName(newAuthorName)
+	return as.authorRepository.Save(targetAuthor)
 }
